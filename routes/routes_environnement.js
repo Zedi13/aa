@@ -9,12 +9,16 @@ module.exports = async function (fastify, opts) {
    */
   fastify.get('/indicateurs', async function (request, reply) {
     const { ville } = request.query
+    const pollution = await fastify.pollutionAnalyse.IndicateurVille(ville)
 
     const indicateurs = `
       Pour ${ville} : 
       Meteo : ${await fastify.meteoAnalyse.IndicateurVille(ville)}
-      Pollution : ${await fastify.pollutionAnalyse.IndicateurVille(ville)}
-      `
+      Pollution : ${pollution.status}
+      Indice de pollution : ${pollution.valeur}
+    `
+;
+
 
     ///
     return indicateurs
@@ -37,13 +41,13 @@ module.exports = async function (fastify, opts) {
 
 
   /** 
- *### MEteo
+ *### Meteo
  */
   fastify.get('/meteo', async function (request, reply) {
     const { ville } = request.query
 
     ///
-    return await instance.meteoAnalyse.IndicateurVille(ville)
+    return await fastify.meteoAnalyse.IndicateurVille(ville)
 
   })
 

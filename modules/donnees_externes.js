@@ -34,7 +34,7 @@ class PollutionAnalyse {
    * @returns Indicateur de pollution
    */
   async IndicateurVille(VilleNom) {
-
+   
     /// On appel l'API
     const result = await api_aqicn.appel(VilleNom)
 
@@ -42,14 +42,12 @@ class PollutionAnalyse {
     if (result.status != 'ok') { return 'Inconnu' }
 
     /// On test maintenant la valeur retournée, pour retourner, sous la forme d'une chaine, un indicateur trés pertinent
-    if (result.data.aqi <= 50) {
-      return 'faible'
-    }
-    if (result.data.aqi <= 100) return 'modérée'
-    if (result.data.aqi <= 150) return 'importante'
-    if (result.data.aqi <= 200) return 'trés importante'
-    if (result.data.aqi <= 300) return 'trop importante'
-    return 'Catastrophique'
+    if (result.data.aqi <= 50) return {"status" : "faible","valeur":result.data.aqi}
+    if (result.data.aqi <= 100) return {"status" : "modéree","valeur": result.data.aqi}
+    if (result.data.aqi <= 150) return {"status" : "importante","valeur": result.data.aqi}
+    if (result.data.aqi <= 200) return {"status" : "tres importante","valeur": result.data.aqi}
+    if (result.data.aqi <= 300) return {"status" : "trop importante","valeur": result.data.aqi}
+    return {"status" : "Run.","valeur": result.data.aqi}
   }
 }
 
